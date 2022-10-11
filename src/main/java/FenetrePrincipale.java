@@ -51,18 +51,10 @@ public class FenetrePrincipale extends JFrame {
                         0, 0, HelperForm.ALIGN_RIGHT),
                 BorderLayout.NORTH);
 
-        Box containerZoneBoutonAction = Box.createVerticalBox();
-        panneau.add(containerZoneBoutonAction, BorderLayout.SOUTH);
-
-        Box zoneBoutonAction = Box.createHorizontalBox();
-        containerZoneBoutonAction.add(zoneBoutonAction);
-        containerZoneBoutonAction.add(
-                Box.createRigidArea(new Dimension(1, defaultMargin)));
-
-        zoneBoutonAction.add(Box.createHorizontalGlue());
-        zoneBoutonAction.add(boutonValider);
-        zoneBoutonAction.add(Box.createRigidArea(
-                new Dimension(defaultMargin, 1)));
+        panneau.add(
+                HelperForm.generateRow(boutonValider, 0, 10,
+                        10, 0, HelperForm.ALIGN_RIGHT),
+                BorderLayout.SOUTH);
 
         setVisible(true);
     }
