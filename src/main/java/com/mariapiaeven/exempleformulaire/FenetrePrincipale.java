@@ -1,10 +1,16 @@
+package com.mariapiaeven.exempleformulaire;
+
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatLightLaf;
+import com.mariapiaeven.exempleformulaire.models.Pays;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.io.File;
+import java.io.IOException;
 
 public class FenetrePrincipale extends JFrame implements WindowListener {
 
@@ -64,12 +70,50 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
         Box formulaire = Box.createVerticalBox();
         panneau.add(formulaire, BorderLayout.CENTER);
 
-        String[]listeCivilites = {"Monsieur", "Madame", "Mademoiselle", "Autre"};
+        //--- LISTE CIVILITE---
+
+        String[] listeCivilites = {"Monsieur", "Madame", "Mademoiselle", "Autre"};
         JComboBox<String> selectCivilite = new JComboBox<>(listeCivilites);
-        selectCivilite.setMaximumSize(new Dimension(200,30));
+        selectCivilite.setMaximumSize(new Dimension(200, 30));
 
         formulaire.add(HelperForm.generateField("Civilité", selectCivilite));
 
+        //--- LISTE PAYS ---
+        Pays[] listePays = {
+                new Pays("France", "FR", "fr.png"),
+                new Pays("Royaume-Unis", "GBR", "gb.png"),
+                new Pays("Pérou", "PE", "pe.png"),
+        };
+
+        JComboBox<Pays> selectPays = new JComboBox<>(listePays);
+        selectPays.setMaximumSize(new Dimension(300, 30));
+
+        selectPays.setRenderer(new DefaultListCellRenderer() {
+            @Override
+            public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
+
+                Pays pays = (Pays) value;
+                setText(pays.getNom());
+
+                try {
+                    Image image = ImageIO.read(new File("src/main/resources/drapeaux/" + pays.getImage()));
+
+                    //On redimensionne l'image
+                    Image resizedImage = image.getScaledInstance(20, 16, Image.SCALE_SMOOTH);
+
+                    setIconTextGap(10);
+
+                    //on change l'icone du JLabel par l'image redimensionée
+                    setIcon(new ImageIcon(resizedImage));
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+
+                return this;
+            }
+        });
+
+        formulaire.add(HelperForm.generateField("Pays", selectPays));
         setVisible(true);
     }
 
@@ -87,7 +131,7 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
     public void windowClosing(WindowEvent e) {
         String[] choix = {"Oui", "Ne pas fermer l'application"};
         int choixUtilisateur = JOptionPane.showOptionDialog(
-        this,
+                this,
                 "Voulez-vos vraiment fermer l'application",
                 "Confirmer",
                 JOptionPane.YES_NO_OPTION,
@@ -97,7 +141,7 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
                 choix[1]
         );
 
-        if (choixUtilisateur == JOptionPane.YES_OPTION){
+        if (choixUtilisateur == JOptionPane.YES_OPTION) {
             System.exit(1);
         }
     }

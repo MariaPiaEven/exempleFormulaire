@@ -1,3 +1,5 @@
+package com.mariapiaeven.exempleformulaire;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -7,6 +9,18 @@ public class HelperForm {
 
     public static final int ALIGN_RIGHT = 1;
     public static final int ALIGN_LEFT = 2;
+
+    public static Box generateField(String texteLabel, Component component){
+        Box champs = Box.createHorizontalBox();
+        champs.add(Box.createRigidArea(new Dimension(10,1)));
+        JLabel label = new JLabel(texteLabel);
+        label.setPreferredSize(new Dimension(120,30));
+        champs.add(label);
+        champs.add(component);
+        champs.add(Box.createHorizontalGlue());
+
+        return champs;
+    }
 
     public static Box generateRow(
             JComponent component,
