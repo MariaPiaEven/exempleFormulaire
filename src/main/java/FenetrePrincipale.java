@@ -46,18 +46,10 @@ public class FenetrePrincipale extends JFrame {
         boutonValider.setSize(new Dimension(100, 30));
 
         //---------- DISPOSITION DES COMPOSANTS -------
-        Box conteneurZoneBoutonOption = Box.createVerticalBox();
-        panneau.add(conteneurZoneBoutonOption, BorderLayout.NORTH);
-
-        conteneurZoneBoutonOption.add(
-                Box.createRigidArea(new Dimension(1,defaultMargin)));
-        Box zoneBoutonOption = Box.createHorizontalBox();
-        conteneurZoneBoutonOption.add(zoneBoutonOption);
-
-        zoneBoutonOption.add(Box.createHorizontalGlue());
-        zoneBoutonOption.add(boutonTheme);
-        zoneBoutonOption.add(Box.createRigidArea(
-                new Dimension(defaultMargin,1)));
+        panneau.add(
+                HelperForm.generateRow(boutonTheme, 10, 0,
+                        0, 0, HelperForm.ALIGN_RIGHT),
+                BorderLayout.NORTH);
 
         Box containerZoneBoutonAction = Box.createVerticalBox();
         panneau.add(containerZoneBoutonAction, BorderLayout.SOUTH);
@@ -65,12 +57,12 @@ public class FenetrePrincipale extends JFrame {
         Box zoneBoutonAction = Box.createHorizontalBox();
         containerZoneBoutonAction.add(zoneBoutonAction);
         containerZoneBoutonAction.add(
-                Box.createRigidArea(new Dimension(1,defaultMargin)));
+                Box.createRigidArea(new Dimension(1, defaultMargin)));
 
         zoneBoutonAction.add(Box.createHorizontalGlue());
         zoneBoutonAction.add(boutonValider);
         zoneBoutonAction.add(Box.createRigidArea(
-                new Dimension(defaultMargin,1)));
+                new Dimension(defaultMargin, 1)));
 
         setVisible(true);
     }
