@@ -3,8 +3,10 @@ import com.formdev.flatlaf.FlatLightLaf;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
-public class FenetrePrincipale extends JFrame {
+public class FenetrePrincipale extends JFrame implements WindowListener {
 
     protected boolean themeSombreActif = true;
     protected int defaultMargin = 10;
@@ -12,6 +14,8 @@ public class FenetrePrincipale extends JFrame {
     public FenetrePrincipale() {
         setSize(500, 500);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+        addWindowListener(this);
 
         //ajout du panneau principal avec un layout de 5 zones (north, south, east, west, center)
         JPanel panneau = new JPanel(new BorderLayout());
@@ -47,7 +51,7 @@ public class FenetrePrincipale extends JFrame {
 
         //---------- DISPOSITION DES COMPOSANTS -------
         panneau.add(
-                HelperForm.generateRow(boutonTheme, 10, 0,
+                HelperForm.generateRow(boutonTheme, 10, 10,
                         0, 0, HelperForm.ALIGN_RIGHT),
                 BorderLayout.NORTH);
 
@@ -62,6 +66,51 @@ public class FenetrePrincipale extends JFrame {
     public static void main(String[] args) {
         FlatDarculaLaf.setup();
         new FenetrePrincipale();
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        String[] choix = {"Oui", "Ne pas fermer l'application"};
+        JOptionPane.showOptionDialog(
+        this,
+                "Voulez-vos vraiment fermer l'application",
+                "Confirmer",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                choix,
+                choix[1]
+        );
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+
     }
 }
 
