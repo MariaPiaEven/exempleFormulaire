@@ -13,7 +13,7 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
 
     public FenetrePrincipale() {
         setSize(500, 500);
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
         addWindowListener(this);
 
@@ -60,6 +60,16 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
                         10, 0, HelperForm.ALIGN_RIGHT),
                 BorderLayout.SOUTH);
 
+        //--- FORMULAIRE ---
+        Box formulaire = Box.createVerticalBox();
+        panneau.add(formulaire, BorderLayout.CENTER);
+
+        String[]listeCivilites = {"Monsieur", "Madame", "Mademoiselle", "Autre"};
+        JComboBox<String> selectCivilite = new JComboBox<>(listeCivilites);
+        selectCivilite.setMaximumSize(new Dimension(200,30));
+
+        formulaire.add(HelperForm.generateField("Civilité", selectCivilite));
+
         setVisible(true);
     }
 
@@ -76,7 +86,7 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
     @Override
     public void windowClosing(WindowEvent e) {
         String[] choix = {"Oui", "Ne pas fermer l'application"};
-        JOptionPane.showOptionDialog(
+        int choixUtilisateur = JOptionPane.showOptionDialog(
         this,
                 "Voulez-vos vraiment fermer l'application",
                 "Confirmer",
@@ -86,6 +96,10 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
                 choix,
                 choix[1]
         );
+
+        if (choixUtilisateur == JOptionPane.YES_OPTION){
+            System.exit(1);
+        }
     }
 
     @Override
