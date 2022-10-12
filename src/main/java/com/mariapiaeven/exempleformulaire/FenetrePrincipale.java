@@ -67,12 +67,16 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
         formulaire.add(HelperForm.generateField("Civilité", selectCivilite));
 
         //------ CHAMPS TEXT / NOM ---------
-        ChampsSaisie champsNom = new ChampsSaisie("[\\p{L}-'\s]");
+        ChampsSaisie champsNom = new ChampsSaisie("[\\p{L}\s'-]");
         formulaire.add(HelperForm.generateField("Nom", champsNom));
 
         //------ CHAMPS TEXT / PRENOM ---------
-        JTextField champsPrenom = new JTextField();
+        ChampsSaisie champsPrenom = new ChampsSaisie("[\\p{L}\s'-]");
         formulaire.add(HelperForm.generateField("Prénom", champsPrenom));
+
+        //------ CHAMPS TEXT / EMAIL---------
+        ChampsSaisie champsEmail = new ChampsSaisie("[a-zA-Z0-9@\\.-]");
+        formulaire.add(HelperForm.generateField("Email", champsEmail));
 
         //--- LISTE PAYS ---
         Pays[] listePays = {
@@ -110,6 +114,10 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
 
         formulaire.add(HelperForm.generateField("Pays", selectPays));
 
+        //------ CHAMPS TEXT / AGE---------
+        ChampsSaisie champsAge = new ChampsSaisie("[0-9]");
+        formulaire.add(HelperForm.generateField("Age", champsAge));
+
         //------- BOUTON VALIDER FORMULAIRE ----------------
         JButton boutonValider = new JButton("Enregistrer");
 
@@ -120,8 +128,7 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
             String message = "Le formulaire comporte des erreurs : ";
 
             champsNom.resetMessage();
-//            champsNom.setBorder(BorderFactory.createEmptyBorder());
-            champsPrenom.setBorder(BorderFactory.createEmptyBorder());
+            champsPrenom.resetMessage();
 
             if (champsNom.getText().equals("")) {
                 erreurNom = true;
@@ -132,7 +139,7 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
             if (champsPrenom.getText().equals("")) {
                 erreurPrenom = true;
                 message += "\n - Prénom est obligatoire, ";
-                champsPrenom.setBorder(BorderFactory.createLineBorder(Color.red));
+                champsPrenom.erreur("Champs obligatoire");
             }
 
             //supprimer les deux derniers caracteres
