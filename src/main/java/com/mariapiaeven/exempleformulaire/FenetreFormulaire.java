@@ -16,9 +16,8 @@ import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FenetrePrincipale extends JFrame implements WindowListener {
+public class FenetreFormulaire extends JFrame {
 
-    protected boolean themeSombreActif = true;
     protected int defaultMargin = 10;
 
     protected JComboBox<String> selectCivilite;
@@ -30,45 +29,16 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
     protected JCheckBox champsMarie;
 
 
-    public FenetrePrincipale() {
+    public FenetreFormulaire() {
 
 
         setSize(500, 500);
-        setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-
-        addWindowListener(this);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         //ajout du panneau principal avec un layout de 5 zones (north, south, east, west, center)
         JPanel panneau = new JPanel(new BorderLayout());
         setContentPane(panneau);
 
-        //------- BOUTON THEME ----------------
-
-        JButton boutonTheme = new JButton("Changer le theme");
-        panneau.add(boutonTheme, BorderLayout.NORTH);
-
-        boutonTheme.addActionListener(
-                e -> {
-                    try {
-                        if (themeSombreActif) {
-                            UIManager.setLookAndFeel(new FlatLightLaf());
-                        } else {
-                            UIManager.setLookAndFeel(new FlatDarculaLaf());
-                        }
-                        SwingUtilities.updateComponentTreeUI(this);
-                        themeSombreActif = !themeSombreActif;
-
-                    } catch (UnsupportedLookAndFeelException ex) {
-                        throw new RuntimeException(ex);
-                    }
-                }
-        );
-
-        //---------- DISPOSITION DES COMPOSANTS -------
-        panneau.add(
-                HelperForm.generateRow(boutonTheme, 10, 10,
-                        0, 0, HelperForm.ALIGN_RIGHT),
-                BorderLayout.NORTH);
 
         //--- FORMULAIRE ---
         Box formulaire = Box.createVerticalBox();
@@ -316,59 +286,7 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
 
     }
 
-    public static void main(String[] args) {
-        FlatDarculaLaf.setup();
-        new FenetrePrincipale();
-    }
 
-    @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        String[] choix = {"Oui", "Ne pas fermer l'application"};
-        int choixUtilisateur = JOptionPane.showOptionDialog(
-                this,
-                "Voulez-vos vraiment fermer l'application",
-                "Confirmer",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                choix,
-                choix[1]
-        );
-
-        if (choixUtilisateur == JOptionPane.YES_OPTION) {
-            System.exit(1);
-        }
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-
-    }
 }
 
 
