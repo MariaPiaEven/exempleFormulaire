@@ -100,7 +100,6 @@ public class ChampsSaisie extends Box {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                System.out.println(e.getKeyChar());
             }
 
             @Override

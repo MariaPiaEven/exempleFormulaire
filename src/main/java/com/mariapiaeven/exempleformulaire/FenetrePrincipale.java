@@ -7,6 +7,8 @@ import com.mariapiaeven.exempleformulaire.models.Pays;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.File;
@@ -79,6 +81,31 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
         //------ CHAMPS TEXT / EMAIL---------
         ChampsSaisie champsEmail = new ChampsSaisie("[a-zA-Z0-9@\\.-]");
         formulaire.add(HelperForm.generateField("Email", champsEmail));
+        champsEmail.getTextField().addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                if (champsEmail.getText().equals("")) {
+                    champsEmail.erreur("Champs obligatoire");
+                } else {
+                    String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
+                    Pattern pattern = Pattern.compile(regex);
+                    Matcher matcher = pattern.matcher(champsEmail.getText());
+                    if (!matcher.matches()) {
+                        champsEmail.erreur("Format invalide");
+                    }
+                }
+            }
+        });
 
         //--- LISTE PAYS ---
         Pays[] listePays = {
@@ -177,7 +204,7 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
                 String regex = "^[\\w!#$%&'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$";
                 Pattern pattern = Pattern.compile(regex);
                 Matcher matcher = pattern.matcher(champsEmail.getText());
-                if(!matcher.matches()){
+                if (!matcher.matches()) {
                     erreurEmail = true;
                     message += "\n - Email format invalide ";
                     champsEmail.erreur("Format invalide");
