@@ -3,6 +3,7 @@ package com.mariapiaeven.exempleformulaire;
 import com.formdev.flatlaf.FlatDarculaLaf;
 import com.formdev.flatlaf.FlatLightLaf;
 import com.mariapiaeven.exempleformulaire.models.Pays;
+import com.mariapiaeven.exempleformulaire.models.Utilisateur;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -216,6 +217,25 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
 
             if (erreurNom || erreurPrenom || erreurAge || erreurEmail) {
                 JOptionPane.showMessageDialog(this, message, "Erreur de saisie", JOptionPane.WARNING_MESSAGE);
+            }else {
+                //----- si il n'y a pas d'erreur ---------
+                Utilisateur nouvelleUtilisateur = new Utilisateur(
+                        //Cast toutes les elements dans liste deroulante(l'objet) pour les convertir en chaine de texte
+                        (String)selectCivilite.getSelectedItem(),
+                        champsNom.getText(),
+                        champsPrenom.getText(),
+                        champsEmail.getText(),
+                        //Cast toutes les elements de la class Pays
+                        (Pays)selectPays.getSelectedItem(),
+                        //Transforme les chaine de texte en nombre
+                        Integer.parseInt(champsAge.getText()),
+                        champsMarie.isSelected()
+                );
+
+                JOptionPane.showMessageDialog(
+                        this,
+                        "L'utilisateur " + nouvelleUtilisateur.getNom() + " a bien été ajouté"
+                );
             }
 
         });
