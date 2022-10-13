@@ -116,7 +116,7 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
 
         //------ CHAMPS TEXT / AGE---------
         ChampsSaisie champsAge = new ChampsSaisie("[0-9]");
-        formulaire.add(HelperForm.generateField("Age", champsAge));
+        formulaire.add(HelperForm.generateField("Age", champsAge, 50));
 
         //------- BOUTON VALIDER FORMULAIRE ----------------
         JButton boutonValider = new JButton("Enregistrer");
