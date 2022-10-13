@@ -1,6 +1,8 @@
 package com.mariapiaeven.exempleformulaire.models;
 
-public class Utilisateur {
+import java.io.Serializable;
+
+public class Utilisateur implements Serializable {
 
     protected String civilite;
     protected String nom;

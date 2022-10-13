@@ -1,8 +1,11 @@
 package com.mariapiaeven.exempleformulaire.models;
 
-public class Pays extends Object{
+import java.io.Serializable;
+
+public class Pays implements Serializable {
     protected String nom ;
     protected String iso;
+    //iso = fr, pe, de par exemple
     protected String image;
 
     public Pays(String nom, String iso, String image) {

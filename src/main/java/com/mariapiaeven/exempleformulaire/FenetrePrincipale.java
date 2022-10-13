@@ -12,8 +12,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,6 +22,28 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
     protected int defaultMargin = 10;
 
     public FenetrePrincipale() {
+
+        ObjectInputStream ois = null;
+        try {
+            final FileInputStream fichier = new FileInputStream("personne.eesc");
+            ois = new ObjectInputStream(fichier);
+            Utilisateur utilisateurFichier = (Utilisateur) ois.readObject();
+            System.out.println(utilisateurFichier.getNom());
+            ois.close();
+
+
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Impossible d'ouvrir le fichier"
+            );
+        }catch (ClassNotFoundException | ClassCastException e){
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Fichier corrompu"
+            );
+        }
+
         setSize(500, 500);
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 
@@ -217,25 +238,41 @@ public class FenetrePrincipale extends JFrame implements WindowListener {
 
             if (erreurNom || erreurPrenom || erreurAge || erreurEmail) {
                 JOptionPane.showMessageDialog(this, message, "Erreur de saisie", JOptionPane.WARNING_MESSAGE);
-            }else {
+            } else {
                 //----- si il n'y a pas d'erreur ---------
                 Utilisateur nouvelleUtilisateur = new Utilisateur(
                         //Cast toutes les elements dans liste deroulante(l'objet) pour les convertir en chaine de texte
-                        (String)selectCivilite.getSelectedItem(),
+                        (String) selectCivilite.getSelectedItem(),
                         champsNom.getText(),
                         champsPrenom.getText(),
                         champsEmail.getText(),
                         //Cast toutes les elements de la class Pays
-                        (Pays)selectPays.getSelectedItem(),
+                        (Pays) selectPays.getSelectedItem(),
                         //Transforme les chaine de texte en nombre
                         Integer.parseInt(champsAge.getText()),
                         champsMarie.isSelected()
                 );
 
-                JOptionPane.showMessageDialog(
-                        this,
-                        "L'utilisateur " + nouvelleUtilisateur.getNom() + " a bien été ajouté"
-                );
+                ObjectOutputStream oos = null;
+                try {
+                    FileOutputStream fichier = new FileOutputStream("personne.eesc");
+
+                    oos = new ObjectOutputStream(fichier);
+                    oos.writeObject(nouvelleUtilisateur);
+                    oos.flush();
+
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "L'utilisateur " + nouvelleUtilisateur.getNom() + " a bien été ajouté"
+                    );
+
+                } catch (IOException ex) {
+                    JOptionPane.showMessageDialog(
+                            this,
+                            "Impossible d'enregistrer l'utilisateur"
+                    );
+                }
+
             }
 
         });
