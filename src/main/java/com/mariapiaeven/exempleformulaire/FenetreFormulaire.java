@@ -7,16 +7,18 @@ import com.mariapiaeven.exempleformulaire.models.Utilisateur;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FenetreFormulaire extends JFrame {
+public class FenetreFormulaire extends JPanel {
 
     protected int defaultMargin = 10;
 
@@ -29,20 +31,16 @@ public class FenetreFormulaire extends JFrame {
     protected JCheckBox champsMarie;
 
 
-    public FenetreFormulaire() {
-
+    public FenetreFormulaire(OnClickAjouter callback) {
 
         setSize(500, 500);
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
         //ajout du panneau principal avec un layout de 5 zones (north, south, east, west, center)
-        JPanel panneau = new JPanel(new BorderLayout());
-        setContentPane(panneau);
-
+        setLayout(new BorderLayout());
 
         //--- FORMULAIRE ---
         Box formulaire = Box.createVerticalBox();
-        panneau.add(formulaire, BorderLayout.CENTER);
+        add(formulaire, BorderLayout.CENTER);
 
         //--- LISTE CIVILITE---
 
@@ -199,7 +197,7 @@ public class FenetreFormulaire extends JFrame {
                 JOptionPane.showMessageDialog(this, message, "Erreur de saisie", JOptionPane.WARNING_MESSAGE);
             } else {
                 //----- si il n'y a pas d'erreur ---------
-                Utilisateur nouvelleUtilisateur = new Utilisateur(
+                Utilisateur nouvelUtilisateur = new Utilisateur(
                         //Cast toutes les elements dans liste deroulante(l'objet) pour les convertir en chaine de texte
                         (String) selectCivilite.getSelectedItem(),
                         champsNom.getText(),
@@ -212,25 +210,35 @@ public class FenetreFormulaire extends JFrame {
                         champsMarie.isSelected()
                 );
 
-                ObjectOutputStream oos = null;
-                try {
-                    FileOutputStream fichier = new FileOutputStream("personne.eesc");
+                callback.executer(nouvelUtilisateur);
 
-                    oos = new ObjectOutputStream(fichier);
-                    oos.writeObject(nouvelleUtilisateur);
-                    oos.flush();
+                //Ajouter un nouvel utilisateur
+                //listeUtilisateur.add(nouvelUtilisateur);
 
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "L'utilisateur " + nouvelleUtilisateur.getNom() + " a bien été ajouté"
-                    );
+                //ObjectOutputStream oos = null;
 
-                } catch (IOException ex) {
-                    JOptionPane.showMessageDialog(
-                            this,
-                            "Impossible d'enregistrer l'utilisateur"
-                    );
-                }
+                //try {
+                    ////FileOutputStream fichier = new FileOutputStream("personne.eesc");
+
+                    ////oos = new ObjectOutputStream(fichier);
+                    ////oos.writeObject(listeUtilisateur);
+                    ////oos.flush();
+                    ////oos.close();
+
+                    ////model.addRow(nouvelUtilisateur.getLigneTableau());
+                    ////model.fireTableDataChanged();
+
+                    ////JOptionPane.showMessageDialog(
+                            //this,
+                            //"L'utilisateur " + nouvelUtilisateur.getNom() + " a bien été ajouté"
+                    //);
+
+                //} catch (IOException ex) {
+                    //JOptionPane.showMessageDialog(
+                            //this,
+                            //"Impossible d'enregistrer l'utilisateur"
+                    //);
+                //}
 
             }
 
@@ -239,17 +247,14 @@ public class FenetreFormulaire extends JFrame {
         boutonValider.setSize(new Dimension(100, 30));
 
         //---------- BOUTON EN BAS -------
-        panneau.add(
+        add(
                 HelperForm.generateRow(boutonValider, 0, 10,
                         10, 0, HelperForm.ALIGN_RIGHT),
                 BorderLayout.SOUTH);
 
-        ouvrirFichier();
-
-        setVisible(true);
     }
 
-    public void ouvrirFichier(){
+    public void ouvrirFichier() {
 
         ObjectInputStream ois = null;
         try {

@@ -22,6 +22,11 @@ public class Utilisateur implements Serializable {
         this.marie = marie;
     }
 
+    public Object[] getLigneTableau() {
+        return new Object[]{
+                civilite, nom, prenom, email, pays.getNom(), age, marie ? "X" : "", ""};
+    }
+
     public String getCivilite() {
         return civilite;
     }
